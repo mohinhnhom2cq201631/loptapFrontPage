@@ -8,7 +8,7 @@ var hbs = require('express-handlebars');
 var mongoose = require('mongoose');
 mongoose.set('useUnifiedTopology', true);
 //connect mongoose
-var mongoDB = 'mongodb+srv://admin:mohinhhoa@cluster0-zhbh3.mongodb.net/test?retryWrites=true&w=majority';
+var mongoDB = 'mongodb+srv://admin:mohinhhoa@cluster0-zhbh3.mongodb.net/loptap';
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
