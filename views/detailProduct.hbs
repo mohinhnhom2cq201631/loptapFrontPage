@@ -1,0 +1,37 @@
+{{!-- {{ data.price}} --}}
+<div class="card mb-6"">
+  <div class="row no-gutters">
+    <div class="col-md-5">
+        {{!-- vi chua co data.img nen lay hinh co san ava01 minh hoa --}}
+        {{!-- <img src="/Images/{{data.img}}" class="card-img" alt="Laptop {{data.name}}"> --}}
+      <img src="/Images/ava01.jpg" class="card-img" title="Laptop {{data.name}}">
+    </div>
+    <div class="col-md-7">
+      <div class="card-body">
+        <h1 class="card-title"><strong>{{data.name}}</strong></h1>
+        <h4><p>{{data.description}} </p></h4>
+        <p class="card-text" >Giá: <strong style="color: red">{{data.price}} đ</strong></p>
+
+        <div class="card w-100">
+        <div class="card-body">
+        <h5 class="card-title">Mô tả</h5>
+        <p class="card-text"><strong>Máy tính xách tay/Laptop {{data.name}}</strong></p>
+        <p class="card-text">- Thương hiệu: {{data.brand}}</p>
+        <p class="card-text">- Chip: {{data.chip}}</p>
+        <p class="card-text">- VGA: {{data.vga}}</p>
+        <p class="card-text">- RAM: {{data.ram}} </p>
+        <p class="card-text">- Kích thước: {{data.size}} </p>
+        </div>
+</div>
+ </div>
+    {{!-- cart button --}}
+    <center>
+        <a href="#" class="btn btn-danger btn-lg" style="width: 250px;margin-top: -10px;margin-bottom: 10px">
+          <span class="fa fa-cart-plus" style="margin-right: 20px"></span>Chọn mua
+        </a>
+    </center>
+      
+    </div>
+
+  </div>
+</div>

@@ -3,6 +3,8 @@ var router = express.Router();
 var Product = require('../models/products');
 var nOnePage = 8;
 var nPage;
+
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
     var page = req.query.page || 1;
@@ -42,4 +44,25 @@ router.get('/', function(req, res, next) {
         res.render('index', { title: 'Laptop Shop', products: productChuck, pages, prePage, nextPage, isFirst, isLast });
     }).limit(nOnePage).skip(nOnePage * (page - 1));
 });
+
+
+var countJson = function(json){
+	var count = 0;
+	for(var id in json){
+			count++;
+	}
+
+	return count;
+}
+
+//  xem chi tiết sản phẩm
+router.get('/chi-tiet/:id.html', function (req, res) {
+	Product.findById(req.params.id).then(function(data){
+		Product.find({_id: {$ne: data._id}}).limit(4).then(function(pro){
+			res.render('detailProduct', {title: 'Laptop Detail', data: data, product: pro});
+		});
+	});
+   
+});
+
 module.exports = router;
