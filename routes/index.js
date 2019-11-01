@@ -72,4 +72,11 @@ router.get('/sign-in', (req, res) => {
         layout: false
     })
 });
+
+router.get('/sign-up', (req, res) => {
+    res.render('signUp', {
+        layout: false
+    })
+});
+
 module.exports = router;
