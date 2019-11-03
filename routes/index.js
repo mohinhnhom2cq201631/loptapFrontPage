@@ -66,17 +66,4 @@ router.get('/chi-tiet/:id.html', function(req, res) {
 
 });
 
-
-router.get('/sign-in', (req, res) => {
-    res.render('signIn', {
-        layout: false
-    })
-});
-
-router.get('/sign-up', (req, res) => {
-    res.render('signUp', {
-        layout: false
-    })
-});
-
 module.exports = router;

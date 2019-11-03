@@ -4,12 +4,19 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var hbs = require('express-handlebars');
+var session = require('express-session');
+var passport = require('passport');
+var flash = require('connect-flash');
+var validator = require('express-validator');
 
 var mongoose = require('mongoose');
 mongoose.set('useUnifiedTopology', true);
 //connect mongoose
 var mongoDB = 'mongodb+srv://nhom2:mohinhhoanhom2@cluster0-lq7bm.mongodb.net/loptap';
 mongoose.connect(mongoDB, { useNewUrlParser: true });
+//--
+require('./config/passport');
+//--
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
@@ -37,10 +44,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+//
+app.use(session({ secret: 'mysupersecret', resave: false, saveUninitialized: false }));
+//-----------------------
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(function(req, res, next) {
+    res.locals.login = req.isAuthenticated();
+    res.locals.user = req.user;
+    next();
+});
+//-----------------------
 //////
-app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/', indexRouter);
+
 
 
 // catch 404 and forward to error handler
