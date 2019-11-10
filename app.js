@@ -9,6 +9,13 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var validator = require('express-validator');
 
+//p fb_auth
+const FacebookStrategy  = require('passport-facebook').Strategy;
+const bodyParser = require('body-parser');
+const config = require('./config/config');
+const routes = require('./routes/authfb');
+const app = express();
+
 var mongoose = require('mongoose');
 mongoose.set('useUnifiedTopology', true);
 //connect mongoose
@@ -23,7 +30,6 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-var app = express();
 
 // view engine setup
 app.engine('hbs', hbs({
@@ -45,6 +51,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 //
+app.use(bodyParser.urlencoded({ extended: false })); //Parse body để get data
 app.use(session({ secret: 'mysupersecret', resave: false, saveUninitialized: false }));
 //-----------------------
 app.use(flash());
@@ -57,6 +64,9 @@ app.use(function(req, res, next) {
 });
 //-----------------------
 //////
+
+// app.use(session({ secret: 'keyboard cat', key: 'sid'}));  //Save user login
+
 app.use('/users', usersRouter);
 app.use('/', indexRouter);
 
@@ -78,4 +88,30 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
+/*config is our configuration variable.*/
+passport.use(new FacebookStrategy({
+    clientID: config.facebook_key,
+    clientSecret:config.facebook_secret ,
+    callbackURL: config.callback_url
+  },
+  function(accessToken, refreshToken, profile, done) {
+    process.nextTick(function () {
+      //Check whether the User exists or not using profile.id
+      if(config.use_database) {
+         //Further code of Database.
+      }
+      return done(null, profile);
+    });
+  }
+));
+
+// Passport session setup. 
+passport.serializeUser(function(user, done) {
+    done(null, user);
+  });
+  
+  passport.deserializeUser(function(obj, done) {
+    done(null, obj);
+  });
+  
 module.exports = app;
