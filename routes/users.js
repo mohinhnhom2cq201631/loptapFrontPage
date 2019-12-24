@@ -2,7 +2,9 @@ var express = require('express');
 var router = express.Router();
 var csrf = require('csurf');
 var passport = require('passport');
-
+var brandDAO=require('../models/DAO/brandDAO')
+var Cart =require('../models/cart')
+var Order=require('../models/orders')
 var csrfProtection = csrf();
 router.use(csrfProtection);
 
@@ -47,6 +49,36 @@ router.post('/sign-up', passport.authenticate('local.signup', {
     failureFlash: true
 }));
 
+// router.get('/check-out',isLoggedIn,function(req,res,next) {
+//     const brandList = brandDAO.get_Brand_List()
+//     res.render('user/checkout',{
+//         pageTitle: 'Thanh toán COD',
+//         brandList: await brandList,
+//         curCustomer: req.user
+//     })
+// })
+
+// router.post('/checkout',isLoggedIn,function(req,res,next) {
+//     if(!req.session.cart){
+//         res.redirect('/cart');
+//     }
+//     const cart = new Cart(req.session.cart);
+//     var order = new Order({
+//         _id: new mongoose.Types.ObjectId(),
+//         user: req.user._id,
+//         cart: cart,
+//         payment:'Ship COD',
+//         created: new Date().toLocaleDateString(),
+//         status: 'Chưa giao'
+//     });
+
+//     order.save(function(error){
+//         if(error) throw error;
+//         console.log("done")
+//         req.session.cart = null;
+//         req.redirect('/')
+//     });   
+// })
 module.exports = router;
 
 function isLoggedIn(req, res, next) {

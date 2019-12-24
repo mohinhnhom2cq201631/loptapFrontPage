@@ -1,0 +1,44 @@
+<div class="container">
+    {{#if cart}}
+        <table id="cart" class="table table-hover table-condensed">
+            <thead>
+            <tr>
+                <th style="width:50%">Sản phẩm</th>
+                <th style="width:8%">Size</th>
+                <th style="width:10%">Giá tiền</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each cart.items}}
+                {{#if this}}
+                    <tr>
+                        <td data-th="Product">
+                            <div class="row">
+                                <div class="col-sm-2 hidden-xs"><img src="{{this.img1}}" class="img-responsive"/></div>
+                                <div class="col-sm-10">
+                                    <h4 class="nomargin">{{this.name}}</h4>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{this.size}}</td>
+                        <td data-th="Price">{{this.price}}</td>
+                    </tr>
+                {{/if}}
+            {{/each}}
+            </tbody>
+            {{!-- <tfoot>
+            <tr>
+                <td><a href="/" class="btn btn-warning"><i class="fa fa-angle-left"></i>&nbsp;Tiếp tục mua sắm</a></td>
+                <td colspan="2" class="hidden-xs"></td>
+                <td class="hidden-xs text-center"><strong>Tổng tiền&nbsp;{{formatCurrency cart.totalPrice}}</strong></td>
+                <td>
+                    <a href="/checkout" class="btn btn-success btn-block">Thanh toán với Credit Card&nbsp;<i class="fa fa-angle-right"></i></a>
+                    <a href="/checkoutCOD" class="btn btn-primary btn-block">Thanh toán COD&nbsp;<i class="fa fa-angle-right"></i></a>
+                </td>
+            </tr>
+            </tfoot> --}}
+        </table>
+    {{else}}
+        <img src="https://www.seekpng.com/png/detail/35-354177_shopping-cart-cart-ecommerce-shopping-amazon-shopping-cart.png">
+    {{/if}}
+</div>

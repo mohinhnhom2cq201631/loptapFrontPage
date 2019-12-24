@@ -61,5 +61,9 @@ var countJson = function(json) {
 
 
 router.get('/chi-tiet/:id.html', productController.product_detail);
+//GET cart page
+router.get('/cart', productController.product_cart);
+//GET add product to cart
+router.post('/cart/add/:id', productController.product_addToCart);
 
 module.exports = router;

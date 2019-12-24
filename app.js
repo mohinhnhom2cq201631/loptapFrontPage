@@ -8,6 +8,7 @@ var session = require('express-session');
 var passport = require('passport');
 var flash = require('connect-flash');
 var validator = require('express-validator');
+const MongoStore = require('connect-mongo')(session);
 
 //p fb_auth
 const FacebookStrategy  = require('passport-facebook').Strategy;
@@ -52,14 +53,20 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 //
 app.use(bodyParser.urlencoded({ extended: false })); //Parse body để get data
-app.use(session({ secret: 'mysupersecret', resave: false, saveUninitialized: false }));
-//-----------------------
+app.use(session({
+  secret:'mysupersecret',
+  resave: true,
+  saveUninitialized: true,
+  store: new MongoStore({mongooseConnection: mongoose.connection}),
+  cookie:{maxAge: 300*1000}
+}));//-----------------------
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next) {
     res.locals.login = req.isAuthenticated();
     res.locals.user = req.user;
+    res.locals.session = req.session;
     next();
 });
 //-----------------------

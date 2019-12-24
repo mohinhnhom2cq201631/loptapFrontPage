@@ -31,10 +31,12 @@
 					<input type="number" id="number" value="0" class="btn-default" style="width:50px; padding:5px" />
 					<button type="button" class="value-button" id="increase" onclick="increaseValue()" value="Increase Value" class="btn btn-default">+</button>
 				</div>        
-    
-        <a href="#" class="btn btn-danger btn-lg" style="width: 250px;margin-top: -10px;margin-bottom: 10px">
-          <span class="fa fa-cart-plus" style="margin-right: 20px"></span>Chọn mua
-        </a>
+     <form action="/cart/add/{{data.id}}" method="post" class="cart">
+      <button type="submit" class="btn btn-danger btn-lg">
+          <span class="fa fa-cart-plus" style="margin-right: 20px"></span>Thêm vào giỏ
+      </button>
+        
+        </form>
     </center>
       
     </div>
