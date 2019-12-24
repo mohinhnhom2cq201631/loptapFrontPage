@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var Product = require('../models/products');
+var Component=require('../models/components');
+var Brand = require('../models/brands');
+var productController=require('../controllers/productController');
 var nOnePage = 8;
 var nPage;
 
@@ -56,14 +59,7 @@ var countJson = function(json) {
     return count;
 }
 
-//  xem chi tiết sản phẩm
-router.get('/chi-tiet/:id.html', function(req, res) {
-    Product.findById(req.params.id).then(function(data) {
-        Product.find({ _id: { $ne: data._id } }).limit(4).then(function(pro) {
-            res.render('detailProduct', { title: 'Laptop Detail', data: data, product: pro });
-        });
-    });
 
-});
+router.get('/chi-tiet/:id.html', productController.product_detail);
 
 module.exports = router;
