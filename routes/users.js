@@ -49,36 +49,34 @@ router.post('/sign-up', passport.authenticate('local.signup', {
     failureFlash: true
 }));
 
-// router.get('/check-out',isLoggedIn,function(req,res,next) {
-//     const brandList = brandDAO.get_Brand_List()
-//     res.render('user/checkout',{
-//         pageTitle: 'Thanh toán COD',
-//         brandList: await brandList,
-//         curCustomer: req.user
-//     })
-// })
+router.get('/check-out',isLoggedIn,function(req,res,next) {
+    res.render('user/checkout',{
+        pageTitle: 'Thanh toán COD',
+        curCustomer: req.user
+    })
+})
 
-// router.post('/checkout',isLoggedIn,function(req,res,next) {
-//     if(!req.session.cart){
-//         res.redirect('/cart');
-//     }
-//     const cart = new Cart(req.session.cart);
-//     var order = new Order({
-//         _id: new mongoose.Types.ObjectId(),
-//         user: req.user._id,
-//         cart: cart,
-//         payment:'Ship COD',
-//         created: new Date().toLocaleDateString(),
-//         status: 'Chưa giao'
-//     });
+router.post('/checkoutCOD',isLoggedIn,function(req,res,next) {
+    if(!req.session.cart){
+        res.redirect('/cart');
+    }
+    const cart = new Cart(req.session.cart);
+    var order = new Order({
+        _id: new mongoose.Types.ObjectId(),
+        user: req.user._id,
+        cart: cart,
+        payment:'Ship COD',
+        created: new Date().toLocaleDateString(),
+        status: 'Chưa giao'
+    });
 
-//     order.save(function(error){
-//         if(error) throw error;
-//         console.log("done")
-//         req.session.cart = null;
-//         req.redirect('/')
-//     });   
-// })
+    order.save(function(error){
+        if(error) throw error;
+        console.log("done")
+        req.session.cart = null;
+        req.redirect('/')
+    });   
+})
 module.exports = router;
 
 function isLoggedIn(req, res, next) {
