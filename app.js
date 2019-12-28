@@ -58,7 +58,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   store: new MongoStore({mongooseConnection: mongoose.connection}),
-  cookie:{maxAge: 300*1000}
+  cookie:{maxAge: 300 * 1000}
 }));//-----------------------
 app.use(flash());
 app.use(passport.initialize());

@@ -65,5 +65,24 @@ router.get('/chi-tiet/:id.html', productController.product_detail);
 router.get('/cart', productController.product_cart);
 //GET add product to cart
 router.post('/cart/add/:id', productController.product_addToCart);
+//GET remove product from cart
+router.post('/cart/remove/:id', productController.product_removeFromCart);
+
+router.post('/checkout',isLoggedIn,productController.checkout_post)
+router.get('/thankyou',isLoggedIn,productController.thank_you)
 
 module.exports = router;
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/');
+}
+
+function notLoggedIn(req, res, next) {
+    if (!(req.isAuthenticated())) {
+        return next();
+    }
+    res.redirect('/');
+}

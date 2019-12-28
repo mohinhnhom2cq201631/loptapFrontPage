@@ -14,7 +14,7 @@
         <div class="card w-100">
         <div class="card-body">
         <h5 class="card-title">Mô tả</h5>
-        <p class="card-text"><strong>Máy tính xách tay/Laptop {{data.name}}</strong></p>
+        <p class="card-text"><strong>Laptop {{data.name}}</strong></p>
         <p class="card-text">- Thương hiệu: {{data.brand.name}}</p>
         <p class="card-text">- Chip: {{data.chip.name}}</p>
         <p class="card-text">- VGA: {{data.vga.name}}</p>
@@ -31,7 +31,7 @@
 					<input type="number" id="number" value="0" class="btn-default" style="width:50px; padding:5px" />
 					<button type="button" class="value-button" id="increase" onclick="increaseValue()" value="Increase Value" class="btn btn-default">+</button>
 				</div>        
-     <form action="/cart/add/{{data.id}}" method="post" class="cart">
+    <form action="/cart/add/{{data.id}}" method="post" class="cart">
       <button type="submit" class="btn btn-danger btn-lg">
           <span class="fa fa-cart-plus" style="margin-right: 20px"></span>Thêm vào giỏ
       </button>
