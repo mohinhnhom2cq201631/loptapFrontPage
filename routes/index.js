@@ -1,11 +1,16 @@
 var express = require('express');
+var passport = require('passport');
 var router = express.Router();
 var Product = require('../models/products');
 var Component=require('../models/components');
 var Brand = require('../models/brands');
+var User = require('../models/users');
 var productController=require('../controllers/productController');
 var nOnePage = 8;
 var nPage;
+
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const keys = require('../config/config');
 
 
 /* GET home page. */
@@ -59,6 +64,38 @@ var countJson = function(json) {
     return count;
 }
 
+passport.use(
+    new GoogleStrategy({
+      clientID: keys.googleClientID,
+      clientSecret: keys.googleClientSecret,
+      callbackURL: keys.callback_url
+    }, (profile, done) => {
+  
+      // Check if google profile exist.
+      if (profile.id) {
+  
+        User.findOne({googleId: profile.id})
+          .then((existingUser) => {
+            if (existingUser) {
+              done(null, existingUser);
+            } else {
+            
+            var newUser = new User();
+            newUser.googleId = profile.id;
+            newUser.email = profile.emails[0].value;
+            newUser.save(function(err, result) {
+                if (err) {
+                    return done(err);
+                }
+                return done(null, newUser);
+            });
+            }
+
+          })
+      }
+    })
+  );
+
 
 router.get('/chi-tiet/:id.html', productController.product_detail);
 //GET cart page
@@ -70,6 +107,9 @@ router.post('/cart/remove/:id', productController.product_removeFromCart);
 
 router.post('/checkout',isLoggedIn,productController.checkout_post)
 router.get('/thankyou',isLoggedIn,productController.thank_you)
+router.get('/auth/google',passport.authenticate('google', {scope: ['profile', 'email']}));
+router.get('/auth/google/callback', passport.authenticate('google'));
+router.get('/api/current_user', (req, res) => {res.send(req.user);});
 
 module.exports = router;
 

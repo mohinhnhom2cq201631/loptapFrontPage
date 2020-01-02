@@ -48,7 +48,9 @@ router.post('/sign-up', passport.authenticate('local.signup', {
     failureRedirect: '/users/sign-up',
     failureFlash: true
 }));
+
 module.exports = router;
+
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
