@@ -5,11 +5,16 @@ var passport = require('passport');
 var brandDAO=require('../models/DAO/brandDAO')
 var Cart =require('../models/cart')
 var Order=require('../models/orders')
+var orderDAO=require('../models/DAO/orderDAO')
 var csrfProtection = csrf();
 router.use(csrfProtection);
 
-router.get('/profile', isLoggedIn, (req, res, next) => {
-    res.render('user/profile', { user: req.user });
+router.get('/profile', isLoggedIn, async (req, res, next) => {
+    let orders = await orderDAO.get_Order_List_By_UserID(req.user.id)
+    res.render('user/profile', { 
+        user: req.user,
+        orders: orders
+    });
 });
 router.get('/logout', isLoggedIn, function(req, res, next) {
     req.logout();

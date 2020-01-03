@@ -1,3 +1,35 @@
-<p>User profile</p>
-<p>{{user.username}}</p>
-<p>{{user.email}}</p>
+<h1>Thông tin người dùng</h1>
+<p>Tên tài khoản: {{user.username}}</p>
+<p>Email: {{user.email}}</p>
+
+<h1>Danh sách đơn hàng</h1>
+{{#if orders}}
+<table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Sản phẩm</th>
+                <th scope="col">Tổng giá trị</th>
+                <th scope="col">Ngày đặt</th>
+                <th scope="col">Trạng thái</th>
+            </tr>
+            </thead>
+            <tbody id="body-order">
+            {{#each orders}}
+                <tr>
+                    <td>
+                        {{#each this.cart.items}}
+                            {{#if this}}
+                                {{this.name}}&nbsp;-&nbsp;{{this.size}}&nbsp;inch&nbsp;-&nbsp;{{this.price}}đ</br>
+                            {{/if}}
+                        {{/each}}
+                    </td>
+                    <td>{{this.cart.totalPrice}}</td>
+                    <td>{{this.created}}</td>
+                    <td>{{this.status}}</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+{{else}}
+<p>Bạn chưa có đơn hàng nào.</p>
+{{/if}}
