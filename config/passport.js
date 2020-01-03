@@ -30,6 +30,9 @@ passport.use('local.signup', new localStrategy({
         newUser.username = username;
         newUser.password = newUser.generateHash(password);
         newUser.email = req.body.email;
+        newUser.info.address = req.body.address;
+        newUser.info.sdt = req.body.sdt;
+        newUser.info.name = req.body.name;
         newUser.save(function(err, result) {
             if (err) {
                 return done(err);
@@ -65,6 +68,7 @@ passport.use(
       callbackURL: keys.callback_url
     }, (accessToken, refreshToken,profile, done) => {
       // Check if google profile exist.
+      console.log(profile)
       if (profile.id) {
         User.findOne({googleId: profile.id})
           .then((existingUser) => {
@@ -74,6 +78,8 @@ passport.use(
             
             var newUser = new User();
             newUser.googleId = profile.id;
+            newUser.info.name = profile.displayName;
+            newUser.email = profile.emails[0].value;
             newUser.save(function(err, result) {
                 if (err) {
                     return done(err);
@@ -81,7 +87,6 @@ passport.use(
                 return done(null, newUser);
             });
             }
-
           })
       }
     })

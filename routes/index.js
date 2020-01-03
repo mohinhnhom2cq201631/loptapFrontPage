@@ -70,7 +70,7 @@ router.post('/cart/remove/:id', productController.product_removeFromCart);
 
 router.post('/checkout',isLoggedIn,productController.checkout_post)
 router.get('/thankyou',isLoggedIn,productController.thank_you)
-router.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
+router.get('/auth/google', passport.authenticate('google', { scope: ['email','profile'] }));
 
 router.get('/auth/google/callback', 
     passport.authenticate('google', { failureRedirect: '/' }),
