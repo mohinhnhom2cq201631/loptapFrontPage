@@ -9,10 +9,6 @@ var productController=require('../controllers/productController');
 var nOnePage = 8;
 var nPage;
 
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const keys = require('../config/config');
-
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
     var page = req.query.page || 1;
@@ -64,39 +60,6 @@ var countJson = function(json) {
     return count;
 }
 
-passport.use(
-    new GoogleStrategy({
-      clientID: keys.googleClientID,
-      clientSecret: keys.googleClientSecret,
-      callbackURL: keys.callback_url
-    }, (profile, done) => {
-  
-      // Check if google profile exist.
-      if (profile.id) {
-  
-        User.findOne({googleId: profile.id})
-          .then((existingUser) => {
-            if (existingUser) {
-              done(null, existingUser);
-            } else {
-            
-            var newUser = new User();
-            newUser.googleId = profile.id;
-            newUser.email = profile.emails[0].value;
-            newUser.save(function(err, result) {
-                if (err) {
-                    return done(err);
-                }
-                return done(null, newUser);
-            });
-            }
-
-          })
-      }
-    })
-  );
-
-
 router.get('/chi-tiet/:id.html', productController.product_detail);
 //GET cart page
 router.get('/cart', productController.product_cart);
@@ -107,8 +70,13 @@ router.post('/cart/remove/:id', productController.product_removeFromCart);
 
 router.post('/checkout',isLoggedIn,productController.checkout_post)
 router.get('/thankyou',isLoggedIn,productController.thank_you)
-router.get('/auth/google',passport.authenticate('google', {scope: ['profile', 'email']}));
-router.get('/auth/google/callback', passport.authenticate('google'));
+router.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
+
+router.get('/auth/google/callback', 
+    passport.authenticate('google', { failureRedirect: '/' }),
+    function(req, res) {
+        res.redirect('/');
+});
 router.get('/api/current_user', (req, res) => {res.send(req.user);});
 
 module.exports = router;

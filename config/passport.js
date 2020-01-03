@@ -1,7 +1,8 @@
 var passport = require('passport');
 var User = require('../models/users');
 var localStrategy = require('passport-local').Strategy;
-
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const keys = require('../config/config');
 
 passport.serializeUser(function(user, done) {
     done(null, user.id);
@@ -57,3 +58,31 @@ passport.use('local.signin', new localStrategy({
     });
 }));
 
+passport.use(
+    new GoogleStrategy({
+      clientID: keys.googleClientID,
+      clientSecret: keys.googleClientSecret,
+      callbackURL: keys.callback_url
+    }, (accessToken, refreshToken,profile, done) => {
+      // Check if google profile exist.
+      if (profile.id) {
+        User.findOne({googleId: profile.id})
+          .then((existingUser) => {
+            if (existingUser) {
+              done(null, existingUser);
+            } else {
+            
+            var newUser = new User();
+            newUser.googleId = profile.id;
+            newUser.save(function(err, result) {
+                if (err) {
+                    return done(err);
+                }
+                return done(null, newUser);
+            });
+            }
+
+          })
+      }
+    })
+  );
